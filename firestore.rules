@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny for unmatched documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User profiles synchronized across all devices
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // APAR Master Data synchronized live across all devices
+    match /apars/{aparId} {
+      allow read, write: if true;
+    }
+
+    // Inspections synchronized live across all devices
+    match /inspections/{inspectionId} {
+      allow read, write: if true;
+    }
+
+    // Audit logs
+    match /audit_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Settings & configurations
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+  }
+}

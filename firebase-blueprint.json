@@ -1,0 +1,109 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role-based access for HSE staff",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "name": { "type": "string", "maxLength": 100, "description": "Full name" },
+        "role": { "type": "string", "enum": ["admin", "inspector"], "description": "System role" },
+        "phone": { "type": "string", "maxLength": 25, "description": "Phone number" },
+        "isActive": { "type": "boolean", "description": "Account status" },
+        "createdAt": { "type": "string", "description": "Creation ISO timestamp" }
+      },
+      "required": ["id", "email", "name", "role", "isActive"]
+    },
+    "Apar": {
+      "title": "Apar",
+      "description": "Fire Extinguisher master record in V-Belt Manufacturing Plant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "description": "Unique APAR ID document key" },
+        "aparCode": { "type": "string", "maxLength": 50, "description": "APAR unique code, e.g. APAR-VBLT-001" },
+        "inventoryNumber": { "type": "string", "maxLength": 100, "description": "Company asset inventory number" },
+        "mediaType": { "type": "string", "enum": ["ABC Powder", "CO2", "Foam", "Clean Agent", "Water Mist"], "description": "Extinguishing agent" },
+        "capacity": { "type": "string", "maxLength": 30, "description": "Capacity with unit, e.g. 6 kg, 6 L" },
+        "brand": { "type": "string", "maxLength": 60, "description": "Manufacturer brand" },
+        "serialNumber": { "type": "string", "maxLength": 60, "description": "Cylinder cylinder serial number" },
+        "building": { "type": "string", "maxLength": 100, "description": "Factory building name" },
+        "area": { "type": "string", "maxLength": 100, "description": "Production or facility area" },
+        "locationDetail": { "type": "string", "maxLength": 200, "description": "Detailed mounting point" },
+        "procurementDate": { "type": "string", "description": "Date of acquisition" },
+        "lastRefillDate": { "type": "string", "description": "Last refill date" },
+        "expiryDate": { "type": "string", "description": "Next service or expiry date" },
+        "status": { "type": "string", "enum": ["aktif", "nonaktif"], "description": "Operational status" },
+        "inactiveReason": { "type": "string", "maxLength": 300, "description": "Reason if disabled" },
+        "photoUrl": { "type": "string", "description": "Cylinder photo URL or base64" },
+        "notes": { "type": "string", "maxLength": 500, "description": "Additional notes" },
+        "lastInspectionDate": { "type": "string", "description": "ISO date of latest inspection" },
+        "lastInspectionStatus": { "type": "string", "enum": ["BAIK", "PERLU TINDAKAN", "TIDAK LAYAK", "BELUM DIPERIKSA"], "description": "Latest inspection condition" },
+        "createdAt": { "type": "string", "description": "Record creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Record update timestamp" }
+      },
+      "required": ["id", "aparCode", "inventoryNumber", "mediaType", "capacity", "brand", "building", "area", "status"]
+    },
+    "Inspection": {
+      "title": "Inspection",
+      "description": "Weekly fire extinguisher inspection checklist report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "description": "Inspection report ID" },
+        "aparId": { "type": "string", "maxLength": 64, "description": "Referenced APAR ID" },
+        "aparCode": { "type": "string", "maxLength": 50, "description": "Referenced APAR Code" },
+        "inspectionDate": { "type": "string", "description": "Date of inspection (YYYY-MM-DD)" },
+        "inspectionTime": { "type": "string", "description": "Time of inspection (HH:mm)" },
+        "inspectorId": { "type": "string", "maxLength": 128, "description": "UID of inspector" },
+        "inspectorName": { "type": "string", "maxLength": 100, "description": "Name of inspector" },
+        "weekNumber": { "type": "integer", "description": "ISO calendar week number" },
+        "year": { "type": "integer", "description": "Year of inspection" },
+        "checklist": { "type": "object", "description": "Checklist responses for 13 standard items" },
+        "specificChecks": { "type": "object", "description": "Media-specific inspection checks" },
+        "finalStatus": { "type": "string", "enum": ["BAIK", "PERLU TINDAKAN", "TIDAK LAYAK"], "description": "Evaluated status" },
+        "notes": { "type": "string", "maxLength": 1000, "description": "Inspection notes and findings" },
+        "actionRecommendation": { "type": "string", "maxLength": 1000, "description": "Recommended corrective action" },
+        "photoUrl": { "type": "string", "description": "Inspection proof photo" },
+        "followUpStatus": { "type": "string", "enum": ["none", "pending", "in_progress", "resolved"], "description": "Corrective action status" },
+        "followUpNotes": { "type": "string", "maxLength": 1000, "description": "Action log note" },
+        "resolvedAt": { "type": "string", "description": "Resolution timestamp" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["id", "aparId", "aparCode", "inspectionDate", "inspectorId", "inspectorName", "finalStatus"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Audit trail log for APAR master modifications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "description": "Log ID" },
+        "entityType": { "type": "string", "maxLength": 50, "description": "Type of entity modified" },
+        "entityId": { "type": "string", "maxLength": 64, "description": "Entity identifier" },
+        "action": { "type": "string", "enum": ["CREATE", "UPDATE", "STATUS_CHANGE", "DELETE"], "description": "Action performed" },
+        "userId": { "type": "string", "maxLength": 128, "description": "UID of author" },
+        "userName": { "type": "string", "maxLength": 100, "description": "Name of author" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" },
+        "details": { "type": "string", "maxLength": 1000, "description": "Change details description" }
+      },
+      "required": ["id", "entityType", "entityId", "action", "userId", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profile with HSE role access"
+    },
+    "/apars/{aparId}": {
+      "schema": { "$ref": "#/entities/Apar" },
+      "description": "APAR cylinder master data repository"
+    },
+    "/inspections/{inspectionId}": {
+      "schema": { "$ref": "#/entities/Inspection" },
+      "description": "Permanent weekly inspection checklists and records"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Append-only audit trail for HSE compliance"
+    }
+  }
+}

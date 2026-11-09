@@ -1,0 +1,10 @@
+{
+  "name": "HSE APAR Management System",
+  "description": "Sistem Manajemen & Inspeksi Rutin Mingguan APAR untuk Pabrik Manufaktur V-Belt HSE",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
