@@ -15,8 +15,8 @@ interface LoginModalProps {
 export const LoginModal: React.FC<LoginModalProps> = ({ onSuccess }) => {
   const { loginWithCredentials } = useAuth();
 
-  const [identifier, setIdentifier] = useState('sbpmekanik@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -67,6 +67,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onSuccess }) => {
             <span>{errorMsg}</span>
           </div>
         )}
+
+
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">

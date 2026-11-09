@@ -14,10 +14,22 @@ export const DEFAULT_SETTINGS: SystemSettings = {
 
 export const INITIAL_DEMO_USERS: UserProfile[] = [
   {
+    id: 'usr_master_admin',
+    email: 'admin@vbelt.hse.id',
+    name: 'Admin',
+    role: 'admin',
+    password: 'admin123',
+    phone: '0812-3456-7890',
+    department: 'HSE & Safety Management',
+    isActive: true,
+    createdAt: '2026-01-01T00:00:00Z',
+  },
+  {
     id: 'usr_admin_01',
     email: 'sbpmekanik@gmail.com', // Matches runtime user email!
     name: 'Budi Santoso, S.T. (HSE Manager)',
     role: 'admin',
+    password: '123456',
     phone: '0812-3456-7890',
     department: 'HSE & Risk Management',
     isActive: true,
@@ -28,6 +40,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     email: 'inspector@vbelt.hse.id',
     name: 'Rian Pratama (Petugas Lapangan)',
     role: 'inspector',
+    password: '123456',
     phone: '0813-8877-6655',
     department: 'HSE Field Inspection',
     isActive: true,
@@ -38,6 +51,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     email: 'inspector2@vbelt.hse.id',
     name: 'Siti Rahmawati (HSE Officer)',
     role: 'inspector',
+    password: '123456',
     phone: '0815-4433-2211',
     department: 'HSE Field Inspection',
     isActive: true,

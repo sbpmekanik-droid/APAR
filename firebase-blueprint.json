@@ -9,6 +9,7 @@
         "email": { "type": "string", "format": "email", "description": "Email address" },
         "name": { "type": "string", "maxLength": 100, "description": "Full name" },
         "role": { "type": "string", "enum": ["admin", "inspector"], "description": "System role" },
+        "password": { "type": "string", "maxLength": 128, "description": "Password credential" },
         "phone": { "type": "string", "maxLength": 25, "description": "Phone number" },
         "isActive": { "type": "boolean", "description": "Account status" },
         "createdAt": { "type": "string", "description": "Creation ISO timestamp" }

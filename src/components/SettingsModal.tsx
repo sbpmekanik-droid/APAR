@@ -33,11 +33,20 @@ export const SettingsModal: React.FC = () => {
 
   // User Profile / Password State
   const [userName, setUserName] = useState(currentUser?.name || '');
+  const [userEmail, setUserEmail] = useState(currentUser?.email || '');
   const [userPhone, setUserPhone] = useState(currentUser?.phone || '');
-  const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [profileSuccess, setProfileSuccess] = useState(false);
+
+  // Sync state if currentUser changes from Firestore live snapshot
+  React.useEffect(() => {
+    if (currentUser) {
+      setUserName(currentUser.name);
+      setUserEmail(currentUser.email);
+      setUserPhone(currentUser.phone || '');
+    }
+  }, [currentUser]);
 
   // First Admin Setup State
   const [showFirstAdminSetup, setShowFirstAdminSetup] = useState(false);
@@ -60,18 +69,31 @@ export const SettingsModal: React.FC = () => {
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userName.trim()) {
+      alert('Nama pengguna wajib diisi.');
+      return;
+    }
+    if (!userEmail.trim()) {
+      alert('Email pengguna wajib diisi.');
+      return;
+    }
     if (newPassword && newPassword !== confirmPassword) {
       alert('Konfirmasi kata sandi baru tidak cocok.');
       return;
     }
+    if (newPassword && newPassword.length < 4) {
+      alert('Kata sandi baru minimal 4 karakter.');
+      return;
+    }
 
     await updateProfileData({
-      name: userName,
-      phone: userPhone,
+      name: userName.trim(),
+      email: userEmail.trim().toLowerCase(),
+      phone: userPhone.trim(),
+      ...(newPassword ? { password: newPassword } : {}),
     });
 
     setProfileSuccess(true);
-    setOldPassword('');
     setNewPassword('');
     setConfirmPassword('');
     setTimeout(() => setProfileSuccess(false), 3000);
@@ -231,12 +253,13 @@ export const SettingsModal: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-slate-300 font-semibold block mb-1">Email Akun (Login):</label>
+              <label className="text-slate-300 font-semibold block mb-1">Email Akun (Digunakan untuk Login di Semua Perangkat):</label>
               <input
                 type="email"
-                value={currentUser?.email || ''}
-                disabled
-                className="w-full px-3 py-2 bg-slate-800/50 border border-slate-800 rounded-xl text-slate-400 cursor-not-allowed"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+                required
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500"
               />
             </div>
 
